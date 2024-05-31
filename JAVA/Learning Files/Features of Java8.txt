@@ -1,0 +1,264 @@
+iDesign
+
+1)
+
+==> Expenses.java
+
+class Expenses{
+    private String expenseType;
+    private Double cost;
+
+    public Expenses() {
+    }
+
+    public Expenses(String expenseType, Double cost) {
+        this.expenseType = expenseType;
+        this.cost = cost;
+    }
+
+    public String getExpenseType() {
+        return expenseType;
+    }
+
+    public void setExpenseType(String expenseType) {
+        this.expenseType = expenseType;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+}
+
+
+2)
+
+==> Main.java
+
+import java.util.*; 
+import java.util.stream.*; 
+
+class Main
+{
+    public static void main(String args[]) {
+        //Fill your code here
+         Scanner scanner = new Scanner(System.in);
+        List<Expenses> expensesList = new ArrayList<>();
+
+        // Get expenses details from the user
+        System.out.println("Enter expense for food");
+        Double foodCost = scanner.nextDouble();
+        expensesList.add(new Expenses("food", foodCost));
+
+        System.out.println("Enter expense for rent");
+        Double rentCost = scanner.nextDouble();
+        expensesList.add(new Expenses("rent", rentCost));
+
+        System.out.println("Enter expense for shopping");
+        Double shoppingCost = scanner.nextDouble();
+        expensesList.add(new Expenses("shopping", shoppingCost));
+
+        System.out.println("Enter expense for groceries");
+        Double groceriesCost = scanner.nextDouble();
+        expensesList.add(new Expenses("groceries", groceriesCost));
+
+        System.out.println("Enter expense for electricity");
+        Double electricityCost = scanner.nextDouble();
+        expensesList.add(new Expenses("electricity", electricityCost));
+
+        // Get salary from the user
+        System.out.println("Enter salary");
+        Double salary = scanner.nextDouble();
+
+        // Map the expense cost and get sum using reduce method
+        Double totalExpenses = expensesList.stream().map(Expenses::getCost).reduce(0.0, Double::sum);
+
+        // Check if expenses exceed salary or not
+        if (totalExpenses > salary) {
+            System.out.println("Expenses exceeds Salary");
+        } else {
+            Double savings = salary - totalExpenses;
+            System.out.println("Savings amount will be Rs." + savings);
+        }
+    }
+}
+
+
+
+2)
+
+==> Event.java
+
+import java.util.*;
+
+class Event {
+    private String eventName;
+    private String organiserName;
+    private Double eventCost;
+
+    public Event() {}
+
+    public Event(String eventName, String organiserName, Double eventCost) {
+        this.eventName = eventName;
+        this.organiserName = organiserName;
+        this.eventCost = eventCost;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getOrganiserName() {
+        return organiserName;
+    }
+
+    public void setOrganiserName(String organiserName) {
+        this.organiserName = organiserName;
+    }
+
+    public Double getEventCost() {
+        return eventCost;
+    }
+
+    public void setEventCost(Double eventCost) {
+        this.eventCost = eventCost;
+    }
+
+    public void display(List<Event> eventList) {
+        eventList.forEach(event -> System.out.println(event.getEventName() + "|" + event.getOrganiserName() + "|" + event.getEventCost()));
+    }
+}
+
+
+==> Main.java
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the number of events");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        List<Event> eventList = new ArrayList<>();
+
+        System.out.println("Enter event details in CSV(Event Name,Organiser Name,Event Cost)");
+        
+        for (int i = 0; i < n; i++) {
+            
+            String[] eventDetails = sc.nextLine().split(",");
+            Event event = new Event(eventDetails[0], eventDetails[1], Double.parseDouble(eventDetails[2]));
+            eventList.add(event);
+        }
+
+        Event event = new Event();
+        event.display(eventList);
+    }
+}
+
+
+
+
+
+
+
+iAssess
+
+1)
+
+==> TicketBooking.java
+
+public class TicketBooking {
+    private String customerName;
+    private Integer noOfTickets;
+    private Double price;
+    
+    // Default constructor
+    public TicketBooking() {}
+    
+    // Parameterized constructor
+    public TicketBooking(String customerName, Integer noOfTickets, Double price) {
+        this.customerName = customerName;
+        this.noOfTickets = noOfTickets;
+        this.price = price;
+    }
+    
+    // Getters and Setters
+    public String getCustomerName() {
+        return customerName;
+    }
+    
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    
+    public Integer getNoOfTickets() {
+        return noOfTickets;
+    }
+    
+    public void setNoOfTickets(Integer noOfTickets) {
+        this.noOfTickets = noOfTickets;
+    }
+    
+    public Double getPrice() {
+        return price;
+    }
+    
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+    
+    // toString method to print the object details
+    @Override
+    public String toString() {
+        return String.format("%-10s %-15d %-15.1f", customerName, noOfTickets, price);
+    }
+}
+
+
+==> Main.java
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<TicketBooking> bookings = new ArrayList<>();
+        
+        // Get number of bookings from user
+        System.out.println("Enter number of bookings");
+        int numBookings = scanner.nextInt();
+        
+        // Get booking details from user and add it to the list
+        for (int i = 0; i < numBookings; i++) {
+            System.out.println("Enter customer name");
+            String customerName = scanner.next();
+            System.out.println("Enter number of tickets");
+            int noOfTickets = scanner.nextInt();
+            System.out.println("Enter the price");
+            double price = scanner.nextDouble();
+            
+            TicketBooking booking = new TicketBooking(customerName, noOfTickets, price);
+            bookings.add(booking);
+        }
+        
+        // Sort the list by price
+        bookings.sort(Comparator.comparing(TicketBooking::getPrice));
+        
+        // Print the booking details
+        System.out.format("%-10s %-15s %-15s\n", "Customer", "No Of Tickets", "Price");
+        bookings.stream().forEach(System.out::println);
+    }
+}
+

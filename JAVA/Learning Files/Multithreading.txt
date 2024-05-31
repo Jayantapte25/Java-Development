@@ -1,0 +1,380 @@
+iDesign
+
+1)
+
+==> Article.java
+
+
+public class Article extends Thread{
+	//Your code here
+	private String line;
+	private int count;
+
+	public Article(String line) {
+		this.line = line;
+		 this.count = 0;
+	}
+
+	public Article() {
+		this.line = "";
+        this.count = 0;
+	}
+
+	public String getLine() {
+		return line;
+	}
+	public void setLine(String line) {
+		this.line = line;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	@Override
+	public void run() {
+		String[] words = line.split("\\s+");
+        for (String word : words) {
+            if (word.equalsIgnoreCase("a") || word.equalsIgnoreCase("an") || word.equalsIgnoreCase("the")) {
+                count++;
+            }
+        }
+	}
+}
+
+
+
+==> Main.java
+
+import java.util.*;
+
+public class Main {
+	public static void main(String[] args){
+		//Your code here
+
+		Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter the number of lines");
+        int n = sc.nextInt();
+        sc.nextLine(); // consume the remaining newline character
+
+        Article[] threads = new Article[n];
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter line " + (i+1));
+            String line = sc.nextLine();
+
+            threads[i] = new Article(line);
+            threads[i].start();
+        }
+
+        int totalCount = 0;
+        for (Article thread : threads) {
+            try {
+                thread.join();
+                totalCount += thread.getCount();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("There are " + totalCount + " articles in the given input");
+
+        sc.close();
+
+		
+	}
+}
+
+
+
+
+
+
+
+
+2)     80%
+
+
+==> User.java
+
+public class User {
+	//write your code here
+
+	private String name;
+    private String mobileNumber;
+    private String city;
+    private String state;
+
+    public User() {
+        this.name = "";
+        this.mobileNumber = "";
+        this.city = "";
+        this.state = "";
+    }
+
+    public User(String name, String mobileNumber, String city, String state) {
+        this.name = name;
+        this.mobileNumber = mobileNumber;
+        this.city = city;
+        this.state = state;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+}
+
+
+
+
+==> CityCount.java
+
+import java.util.*;
+
+public class CityCount extends Thread {
+	//write your code here
+	private String city;
+    private int count;
+    private ArrayList<User> userList;
+
+    public CityCount() {
+        this.city = "";
+        this.count = 0;
+        this.userList = new ArrayList<User>();
+    }
+
+    public CityCount(String city, ArrayList<User> userList) {
+        this.city = city;
+        this.count = 0;
+        this.userList = userList;
+    }
+
+    public void run() {
+        for (User user : userList) {
+            if (user.getCity().equalsIgnoreCase(city)) {
+                count++;
+            }
+        }
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public ArrayList<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(ArrayList<User> userList) {
+        this.userList = userList;
+    }
+}
+
+
+
+==> Main.java
+
+import java.util.*;
+
+public class Main {
+	public static void main(String args[]) throws Exception {
+		//write your code here
+
+		Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter the number of users:");
+        int n = sc.nextInt();
+        sc.nextLine(); // consume the remaining newline character
+
+        ArrayList<User> userList = new ArrayList<User>();
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter the details of user " + (i+1));
+            String[] userDetails = sc.nextLine().split(",");
+
+            User user = new User(userDetails[0], userDetails[1], userDetails[2], userDetails[3]);
+            userList.add(user);
+        }
+
+        System.out.println("Enter the number of cities:");
+        int m = sc.nextInt();
+        sc.nextLine(); // consume the remaining newline character
+
+        ArrayList<CityCount> cityCountList = new ArrayList<CityCount>();
+        for (int i = 0; i < m; i++) {
+            System.out.println("Enter the name of city " + (i+1));
+            String cityName = sc.nextLine();
+
+            CityCount cityCount = new CityCount(cityName,  userList);
+            cityCountList.add(cityCount);
+            cityCount.start();
+        }
+
+        for (CityCount cityCount : cityCountList) {
+            try {
+                cityCount.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(cityCount.getCity() + "--" + cityCount.getCount());
+		}
+	}
+}
+
+
+
+
+
+
+
+iAssess
+
+1) 60%
+
+
+==> FrequencyCounterThread.java
+
+import java.util.*;
+
+class FrequencyCounterThread extends Thread {
+    private String text;
+    private Map<Character, Integer> characterFrequency;
+
+    public FrequencyCounterThread(String text) {
+        this.text = text;
+        this.characterFrequency = new HashMap<>();
+    }
+
+    @Override
+    public void run() {
+        // Count the frequency of characters in the text
+        for (int i = 0; i < text.length(); i++) {
+            char character = text.charAt(i);
+            characterFrequency.put(character, characterFrequency.getOrDefault(character, 0) + 1);
+        }
+    }
+
+    public Map<Character, Integer> getCharacterFrequency() {
+        return characterFrequency;
+    }
+}   
+
+
+
+
+
+==> Main.java
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Get the number of counters or threads from the user
+        System.out.println("Enter Number of Counters :");
+        int numCounters = scanner.nextInt();
+
+        FrequencyCounterThread[] threads = new FrequencyCounterThread[numCounters];
+
+        // Get the input text for each thread from the user and create a thread for each input
+        for (int i = 0; i < numCounters; i++) {
+            System.out.println("Enter text for counter " + (i + 1) + " :");
+            String text = scanner.next();
+            threads[i] = new FrequencyCounterThread(text);
+        }
+
+        // Start all the threads
+        for (FrequencyCounterThread thread : threads) {
+            thread.start();
+        }
+
+        // Wait for all the threads to complete
+        for (FrequencyCounterThread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Print the frequency of characters for each thread
+
+       
+
+        for (int i = 0; i < numCounters; i++) {
+            System.out.println("Counter " + (i + 1) + " Result :");
+             int[] capital = new int[26];
+             int[] small = new int[26];
+            Map<Character, Integer> characterFrequency = threads[i].getCharacterFrequency();
+            for (Map.Entry<Character, Integer> entry : characterFrequency.entrySet()) {
+                if(entry.getKey() >= 65 && entry.getKey() <= 90) {
+                    capital[entry.getKey()-65] = entry.getValue();
+                }
+                else {
+                    small[entry.getKey()-97] = entry.getValue();
+                }
+                
+            }
+             for(int k = 0; k < 26; k++) {
+                if(capital[k] > 0) {
+                    System.out.print(((char) (65 + k)) + ":" + capital[k] + " ");
+                }
+            }
+
+            for(int k = 0; k < 26; k++) {
+                if(small[k] > 0) {
+                    System.out.print(((char) (97 + k)) + ":" + small[k] + " ");
+                }
+            }
+
+            System.out.println();
+        }
+
+       
+    }
+}   
+
+
