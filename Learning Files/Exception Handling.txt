@@ -1,0 +1,441 @@
+iDesign
+
+1) 
+
+==> ItemType.java
+
+public class ItemType {
+//Fill your code here
+
+        private String name;
+        private Double deposit, costPerDay;
+
+        public ItemType(String name, Double deposit, Double costPerDay) {
+            this.name = name;
+            this.deposit = deposit;
+            this.costPerDay = costPerDay;
+        }
+
+        @Override
+        public String toString() {
+            return "The details of the item type are:\nName:" + name + "\nDeposit:" + deposit + "\nCost Per Day:" + costPerDay;
+        }
+}
+
+
+
+
+==> Main.java
+
+import java.io.*;
+
+public class Main {
+	public static void main(String args[]) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
+        //Fill your code here
+
+        String name, input = "";
+        Double deposit, costPerDay;
+
+        try {
+            System.out.println("Enter the Item type details:");
+            System.out.println("Enter the name:");
+            name = br.readLine();
+
+            System.out.println("Enter the deposit:");
+            input = br.readLine();
+            deposit = Double.parseDouble(input);
+
+            System.out.println("Enter the cost per day:");
+            input = br.readLine();
+            costPerDay = Double.parseDouble(input);
+
+            ItemType i = new ItemType(name, deposit, costPerDay);
+            System.out.println(i.toString());
+        }
+        catch(NumberFormatException e) {
+             System.out.println("java.lang.NumberFormatException: For input string: \"" + input + "\"");
+        }
+
+		
+
+	}
+}
+
+
+
+
+
+2)
+
+==> Main.java
+
+import java.util.*;
+
+public class Main {
+	public static void main(String args[]) {
+
+			int numOfSeats, input = 0;
+			boolean[] arr = new boolean[100];
+
+			Scanner sc = new Scanner(System.in);
+
+			System.out.println("Enter the number of seats to be booked:");
+			numOfSeats = sc.nextInt();
+
+			try {
+				for(int i = 0; i < numOfSeats; i++) {
+					System.out.println("Enter the seat number " + (i+1));
+					input = sc.nextInt() - 1;
+					arr[input] = true;
+				}
+			
+			
+				System.out.println("The seats booked are:");
+				for(int i = 0; i < 100; i++) {
+					if(arr[i]) {
+						System.out.println(i+1);
+					}
+				}
+			}
+			catch(ArrayIndexOutOfBoundsException e) {
+				System.out.println("java.lang.ArrayIndexOutOfBoundsException: " + input);
+			}			
+	}
+}
+
+
+
+
+3)
+
+==> Main.java
+
+import java.io.*;
+public class Main {
+	public static void main(String[] args)throws Exception{
+		//Your code here
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Enter the contact details");
+		String st=br.readLine();
+		String[] str=st.split(",");
+        // fill the code
+
+		try {
+            ContactDetail cd = new ContactDetail(str[0], str[1], str[2], str[3], str[4]);
+
+		    ContactDetailBO.validate(cd.getMobile(), cd.getAlternateMobile());
+
+            System.out.println(cd.toString());
+
+        }
+        catch(DuplicateMobileNumberException e) {
+            System.out.println(e);
+        } 
+	}
+}
+
+
+
+==> ContactDetail.java
+
+
+public class ContactDetail {
+	//Your code here
+    private    String mobile;
+	private	String alternateMobile;
+	private	String landLine;
+	private	String email;
+	private String address;
+	public ContactDetail(String mobile, String alternateMobile, String landLine, String email, String address) {
+		this.mobile = mobile;
+		this.alternateMobile = alternateMobile;
+		this.landLine = landLine;
+		this.email = email;
+		this.address = address;
+	}
+	public ContactDetail()
+	{
+		
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	public String getAlternateMobile() {
+		return alternateMobile;
+	}
+	public void setAlternateMobile(String alternateMobile) {
+		this.alternateMobile = alternateMobile;
+	}
+	public String getLandLine() {
+		return landLine;
+	}
+	public void setLandLine(String landLine) {
+		this.landLine = landLine;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+    public String toString()
+    {
+        return "Mobile:"+this.mobile+"\nAlternate mobile:"+this.alternateMobile+"\nLandLine:"+this.landLine+"\nEmail:"+this.email+"\nAddress:"+this.address;
+    }
+}
+
+
+==> ContactDetailBO.java
+
+
+public class ContactDetailBO {
+		//your code here
+	public static void validate(String mobile,String AlternateMobile) throws DuplicateMobileNumberException
+    {
+       // fill the code
+
+	   if(mobile.equals(AlternateMobile)) {
+		   throw new DuplicateMobileNumberException("Mobile number and alternate mobile number are same");
+	   }
+    }
+}
+
+
+
+==> DuplicateMobileNumberException.java
+
+
+public class DuplicateMobileNumberException extends Exception {
+	//your code here
+
+	public DuplicateMobileNumberException(String s) {
+		super(s);
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+iAssess
+
+
+1)
+
+==> Main.java
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the stage event start date and end date");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
+
+        Date startDate = null, endDate = null;
+        boolean isInputValid = false;
+
+        while (!isInputValid) {
+            try {
+                startDate = dateFormat.parse(scanner.nextLine().trim());
+                endDate = dateFormat.parse(scanner.nextLine().trim());
+                isInputValid = true;
+
+				System.out.println("Start date:" + dateFormat.format(startDate));
+        		System.out.println("End date:" + dateFormat.format(endDate));
+            } catch (ParseException e) {
+                System.out.println("Input dates should be in the format 'dd-MM-yyyy-HH:mm:ss'");
+				System.exit(0);
+            }
+        }
+
+        
+    }
+}
+
+
+
+2)
+
+==> User.java
+
+public class User {
+	//Your code here
+
+	private String name, mobile, username, password;
+
+	public User(String name, String mobile, String username, String password) {
+		this.mobile = mobile;
+		this.name = name;
+		this.username = username;
+		this.password = password;
+	}
+	public User()
+	{
+		
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+    public String toString()
+    {
+        return "Name:"+this.name+"\nMobile:"+this.mobile+"\nUsername:"+this.username+"\nPassword:"+this.password;
+    }
+}
+
+
+
+==> UserBO.java
+
+
+
+public class UserBO {
+	//Your code here
+
+	public static void validate(User u) throws WeakPasswordException
+    {
+       // fill the code
+
+	   String password = u.getPassword();
+
+	   if(password.length() < 10 || password.length() > 20) {
+		    throw new WeakPasswordException("Your password is weak");
+	   }
+
+	   // Check for at least one digit
+        boolean hasDigit = false;
+        for (char c : password.toCharArray()) {
+            if (Character.isDigit(c)) {
+                hasDigit = true;
+                break;
+            }
+        }
+        if (!hasDigit) {
+            throw new WeakPasswordException("Your password is weak");
+        }
+
+        // Check for at least one special character
+        boolean hasSpecialChar = false;
+        for (char c : password.toCharArray()) {
+            if (!Character.isLetterOrDigit(c)) {
+                hasSpecialChar = true;
+                break;
+            }
+        }
+        if (!hasSpecialChar) {
+            throw new WeakPasswordException("Your password is weak");
+        }
+
+        // Check for at least one letter
+        boolean hasLetter = false;
+        for (char c : password.toCharArray()) {
+            if (Character.isLetter(c)) {
+                hasLetter = true;
+                break;
+            }
+        }
+        if (!hasLetter) {
+            throw new WeakPasswordException("Your password is weak");
+        }
+
+    }
+}
+
+
+
+==> WeakPasswordException.java
+
+public class WeakPasswordException extends Exception {
+	//your code here
+
+	public WeakPasswordException(String s) {
+		super(s);
+	}
+
+}
+
+
+
+==> Main.java
+
+import java.io.*;
+
+public class Main {
+
+	public static void main(String[] args)throws IOException {
+		//Your code here
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Enter the user details");
+		String st=br.readLine();
+		String[] str=st.split(",");
+        // fill the code
+
+		try {
+            User u = new User(str[0], str[1], str[2], str[3]);
+
+		    UserBO.validate(u);
+
+            System.out.println(u.toString());
+
+        }
+        catch(WeakPasswordException e) {
+            System.out.println(e);
+        } 
+		
+	}
+
+}
+

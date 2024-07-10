@@ -1,0 +1,187 @@
+iDesign
+
+1) 
+
+=> Product.java
+
+   class Product {
+       private Long id;
+       private String productName, supplierName;
+
+       public Product(Long id, String productName, String supplierName) {
+           this.id = id;
+           this.productName = productName;
+           this.supplierName = supplierName;
+       }
+
+       @Override
+       public String toString() {
+           return this.id + " : " + this.productName + " : " + this.supplierName;
+       }
+   }
+
+
+=> Main java
+
+import java.util.*;
+
+public class Main {
+
+	public static void main(String[] args) {
+		//fill your code here
+		Scanner sc = new Scanner(System.in);
+
+        Long id;
+        String productName, supplierName;
+
+        System.out.println("Enter the product id");
+        id = sc.nextLong();
+
+        System.out.println("Enter the product name");
+        sc.nextLine();
+        productName = sc.nextLine();
+
+        System.out.println("Enter the supplier name");
+        supplierName = sc.nextLine();
+
+        Product product = new Product(id, productName, supplierName);
+
+        System.out.println(product.toString());
+
+         System.out.println("Invoking getClass() method : " + product.getClass());
+		
+	}
+
+}
+
+
+
+iAssess
+
+=> Customer.java
+
+import java.util.*;
+class Customer implements Cloneable {
+    //Fill your code here
+    private String name, id, country;
+
+    public Customer() {
+        System.out.println("Customer object created.");
+    }
+
+    public Customer(String name, String id, String country) {
+        this.name = name;
+        this.id = id;
+        this.country = country;
+    }
+
+    @Override
+    public String toString() {
+      return "Name : " + name  + " ID : " + id + " Country : " + country;
+    }
+
+     @Override
+	 public Object clone() throws CloneNotSupportedException {
+	 return super.clone();
+	 }
+
+
+}
+
+
+
+
+=> Complaint.java
+
+import java.util.*;
+class Complaint{
+    //Fill your code here
+    private String complaint;
+    private Customer customer;
+
+    public Complaint() {
+        System.out.println("Complaint object created.");
+    }
+
+    public Complaint(String complaint, Customer customer) {
+        this.complaint = complaint;
+        this.customer = customer;
+    }
+
+    public void display() {
+        System.out.println(customer.toString() + " Complaint : " + complaint);
+    }
+
+    public Customer getCustomer() {
+      return this.customer;
+    }
+   
+}
+
+
+
+=> Main.java
+
+import java.util.*;
+import java.io.*;
+class Main{
+public static void main(String[] args) throws Exception{
+
+  //Fill your code here
+      Scanner sc = new Scanner(System.in);
+
+      ArrayList<Complaint> list = new ArrayList<>();
+      int count = 0;
+
+      String customerName, id, country, complaint, addComplaint;
+
+      do {
+        System.out.println("Enter the customer name");
+        customerName = sc.nextLine();
+
+        if(customerName.equals("") || customerName == null) {
+          Customer previousCustomer = (Customer)  list.get(count-1).getCustomer().clone();
+          System.out.println("Same customer");
+
+          System.out.println("Enter the complaint");
+          complaint = sc.nextLine();
+
+          Complaint c = new Complaint(complaint, previousCustomer);
+
+          list.add(c);
+        }
+        else {
+          System.out.println("Enter the id");
+          id = sc.nextLine();
+
+          System.out.println("Enter the country");
+           country = sc.nextLine();
+
+            System.out.println("Enter the complaint");
+           complaint = sc.nextLine();
+
+           Customer customer = new Customer(customerName, id, country);
+
+           Complaint c = new Complaint(complaint, customer);
+
+           list.add(c);
+        }
+
+        
+
+        count++;
+
+        System.out.println("Add another complaint ??");
+        addComplaint = sc.nextLine();
+        
+      }while(addComplaint.equals("yes") && count < 100);
+
+
+      System.out.println("Complaint Details");
+      for(Complaint c : list) {
+        c.display();
+      }
+
+}
+
+}
